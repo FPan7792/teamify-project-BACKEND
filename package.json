@@ -17,6 +17,7 @@
     "express": "^4.17.1",
     "express-formidable": "^1.2.0",
     "git": "^0.1.5",
+    "mailgun-js": "^0.22.0",
     "mongoose": "^5.13.7",
     "puppeteer": "^10.4.0",
     "uid2": "0.0.3"

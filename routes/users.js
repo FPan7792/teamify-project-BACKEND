@@ -10,30 +10,69 @@ const salt = uid2(16);
 
 const User = require("../models/User");
 
+// envoie de mail automatisé config
+const mailgun = require("mailgun-js")({
+  apiKey: process.env.MAILGUN_APIKEY,
+  domain: process.env.MAILGUN_DOMAIN,
+});
+
 router.post("/user/signup", async (req, res) => {
   try {
     let alert;
 
-    const verifEmail = await User.findOne({ email: req.fields.email });
+    const { username, email, password } = req.fields;
+
+    const verifEmail = await User.findOne({ email });
 
     if (!verifEmail) {
       const verifUsername = await User.findOne({
-        username: req.fields.username,
+        username,
       });
 
       if (!verifUsername) {
         const newUser = new User({
-          email: req.fields.email,
-          username: req.fields.username,
+          email,
+          username,
           salt: salt,
-          hash: SHA256(req.fields.password + salt).toString(encBase64),
+          hash: SHA256(password + salt).toString(encBase64),
           token: token,
         });
 
         await newUser.save();
         console.log("New User saved ");
 
+        const data = {
+          from: `TEAMIFY TEAM <support@teamify.com>`,
+          to: email,
+          subject: "Welcome on TEAMIFY",
+          text: ` 
+Hi ${username}, you just registered on TEAMIFY website, welcome to our community !
+Here are your authentification informations. 
+
+
+USERNAME : ${username} 
+PASSWORD: ${password}
+
+
+Hope you'll fully enjoy the API. For now, you can already find and build your team with your favorite active and retired soccer players !
+Please note that a lot of features are coming very soon ! We're currently hardly working on that ! 
+
+Enjoy and support us giving your feeling about the API on our GITHUB account : https://github.com/FPan7792/teamify-project ! 
+
+See you very soon ! 🤗`,
+        };
+
+        mailgun.messages().send(data, function (error, body) {
+          if (!error) {
+            console.log("success");
+            console.log(body);
+          }
+          // res.status(401).json(error);
+          console.log(error);
+        });
+
         res.status(200).json(newUser);
+        console.log(newUser);
       } else {
         alert = "Username already taken";
         console.log(alert);
