@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios").default;
 
+// SECURISATION DU MDP
 const SHA256 = require("crypto-js/sha256");
 const encBase64 = require("crypto-js/enc-base64");
 const uid2 = require("uid2");
@@ -9,6 +10,9 @@ const uid2 = require("uid2");
 const token = uid2(16);
 const salt = uid2(16);
 
+// =============================>
+
+// MODELE ROUTE USER
 const User = require("../models/User");
 
 // envoie de mail automatisé config
@@ -17,6 +21,7 @@ const mailgun = require("mailgun-js")({
   domain: process.env.MAILGUN_DOMAIN,
 });
 
+// ROUTE D INSCRIPTION DU USER A L API TEAMIFY
 router.post("/user/signup", async (req, res) => {
   try {
     let alert;
@@ -42,6 +47,8 @@ router.post("/user/signup", async (req, res) => {
         await newUser.save();
         console.log("New User saved ");
 
+        // GENERATION D UN FICHIER EQUIPE LIE AU USER EN DTB directement après l creation du compte
+
         const generateNewTeams = async () => {
           const value = {
             number_of_teams: 1,
@@ -58,6 +65,7 @@ router.post("/user/signup", async (req, res) => {
         };
         await generateNewTeams();
 
+        // ENVOIE AUTO D UN MAIL DE CONFIRMATION D INSCRIPTION VIA MAILGUN
         const data = {
           from: `TEAMIFY TEAM <support@teamify.com>`,
           to: email,
@@ -106,6 +114,7 @@ See you very soon ! 🤗`,
   }
 });
 
+// CONNEXION DU USER A SON COMPTE
 router.post("/user/login", async (req, res) => {
   let alert;
 

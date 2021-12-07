@@ -1,12 +1,13 @@
-//  FONCTIONNALITE Non Implémentée à ce jour
-
 const express = require("express");
 const router = express.Router();
 
 const Team = require("../models/Team.js");
 const User = require("../models/User.js");
+
+// CERTIFIE LAUTHENTIFICATION DU USER
 const isAuthenticated = require("../middlewares/IsAuthenticated.js");
 
+// APPEL DES EQUIPES DE L USER STOCHEE EN DTB
 router.get("/user/myteam", async (req, res) => {
   let alert;
 
@@ -27,17 +28,12 @@ router.get("/user/myteam", async (req, res) => {
   }
 });
 
+// CREATION D UN FICHIER EQUIPES LIE AU USER. ROUTE APPELLEE DES LA CREATION D UN NOUVEL UTILSATEUR
 router.post("/user/myteams/create", isAuthenticated, async (req, res) => {
   let alert;
 
-  //   Recuperer l'id grace a owner a mettre en palce dans le front ou grace au middelware
-
-  //   console.log("Trying to register new userTeams document: " + req.fields.owner);
   console.log(req.fields);
   const { number_of_teams, teams, user_id } = req.fields;
-  //   Number of temas est géré dans le front, en fonction du nombre d'équipes possédées limité a 3
-  // Teames est un tableau sur lequel on pourra mappé pour récupérer les equipes possédées
-  // owner ne change pas, on devra récupéré l'id de l'inscrit.
 
   const owner = await User.findOne({ token: user_id });
   console.log(owner);
@@ -63,6 +59,7 @@ router.post("/user/myteams/create", isAuthenticated, async (req, res) => {
   }
 });
 
+// ON MET A JOUR L EQUIPE DE L'UTILISATEUR A CHAQUE AJOUT OU SUPPRESSION DE JOUEUR DANS L EQUIPE
 router.put("/user/myteam/update", isAuthenticated, async (req, res) => {
   let alert;
 
@@ -91,23 +88,25 @@ router.put("/user/myteam/update", isAuthenticated, async (req, res) => {
   }
 });
 
-router.put("/user/myteam/remove", async (req, res) => {
-  let alert;
-  console.log(req.fields.player);
+// ROUTES DE SUPPRESSION D'UNE EQUIPE DE L UTILISATEUR. PAS ENCORE IMPLEMENTEE
 
-  try {
-    await Team.findOneAndRemove({
-      user_id: req.fields.team_index,
-    });
+// router.put("/user/myteam/remove", async (req, res) => {
+//   let alert;
+//   console.log(req.fields.player);
 
-    res
-      .status(200)
-      .send(`The team ${req.fields.team_name} had been successfully removed`);
-  } catch (error) {
-    alert = error.message;
-    res.status(400).send(alert);
-    console.log(alert);
-  }
-});
+//   try {
+//     await Team.findOneAndRemove({
+//       user_id: req.fields.team_index,
+//     });
+
+//     res
+//       .status(200)
+//       .send(`The team ${req.fields.team_name} had been successfully removed`);
+//   } catch (error) {
+//     alert = error.message;
+//     res.status(400).send(alert);
+//     console.log(alert);
+//   }
+// });
 
 module.exports = router;
