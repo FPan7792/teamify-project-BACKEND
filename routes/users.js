@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const axios = require("axios").default;
 
 const SHA256 = require("crypto-js/sha256");
 const encBase64 = require("crypto-js/enc-base64");
@@ -41,17 +42,33 @@ router.post("/user/signup", async (req, res) => {
         await newUser.save();
         console.log("New User saved ");
 
+        const generateNewTeams = async () => {
+          const value = {
+            number_of_teams: 1,
+            teams: [{ equipe: [], valeur: 0 }],
+            user_id: newUser.token,
+          };
+          console.log(newUser);
+
+          await axios.post("http://127.0.0.1:3001/user/myteams/create", value, {
+            headers: {
+              Authorization: "Bearer " + newUser.token,
+            },
+          });
+        };
+        await generateNewTeams();
+
         const data = {
           from: `TEAMIFY TEAM <support@teamify.com>`,
           to: email,
           subject: "Welcome on TEAMIFY",
           text: ` 
 Hi ${username}, you just registered on TEAMIFY website, welcome to our community !
-Here are your authentification informations. 
+Here are your authentification datas : 
 
 
 USERNAME : ${username} 
-PASSWORD: ${password}
+PASSWORD : ${password}
 
 
 Hope you'll fully enjoy the API. For now, you can already find and build your team with your favorite active and retired soccer players !

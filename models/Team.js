@@ -1,12 +1,11 @@
-// Modele EQUIPE
+// Modele EQUIPES
 
 const mongoose = require("mongoose");
 
-const Team = mongoose.model("Team", {
-  team_name: String,
-  team_index: { type: Number, require: true, unique: true },
-  team_players: Array,
-  team_value: Number,
+const UserTeams = mongoose.model("User_Team", {
+  number_of_teams: Number,
+  user_id: String,
+  teams: Array,
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -14,4 +13,4 @@ const Team = mongoose.model("Team", {
   },
 });
 
-module.exports = Team;
+module.exports = UserTeams;

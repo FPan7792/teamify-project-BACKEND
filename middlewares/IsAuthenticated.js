@@ -10,13 +10,22 @@ const isAuthenticated = async (req, res, next) => {
     });
 
     if (!user) {
-      return res.status(401).send("Unauthorized");
+      console.log("Unauthorized");
+      return res.status(401).send("Unauthorized. The user is not connected");
     } else {
       req.user = user;
+      console.log("authorized");
+
       return next();
     }
   } else {
-    return res.status(401).send("Unauthorized");
+    console.log("Unauthorized");
+
+    return res
+      .status(401)
+      .send(
+        "Unauthorized. An Authorization header must be sent within the request "
+      );
   }
 };
 

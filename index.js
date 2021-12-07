@@ -27,13 +27,13 @@ const usersRoutes = require("./routes/users");
 // routes pour les requetes reltives aux joueurs
 const playersRoutes = require("./routes/players");
 
-// const teamsRoutes = require("./routes/teams");
+const teamsRoutes = require("./routes/teams");
 // pas encore implémentée
 
 app.use(usersRoutes);
 app.use(playersRoutes);
 
-// app.use(teamsRoutes);
+app.use(teamsRoutes);
 // pas encore implémentée
 
 //
