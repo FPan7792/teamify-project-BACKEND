@@ -2,6 +2,11 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios").default;
 
+// débloquer les requtes cross-origin
+const app = express();
+const cors = require("cors");
+app.use(cors());
+
 // SECURISATION DU MDP
 const SHA256 = require("crypto-js/sha256");
 const encBase64 = require("crypto-js/enc-base64");

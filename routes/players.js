@@ -1,6 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const axios = require("axios").default;
+const app = express();
+// débloquer les requtes cross-origin
+const cors = require("cors");
+app.use(cors());
+
 
 //  import du package pupeeteer pour fetch les données
 const puppeteer = require("puppeteer");

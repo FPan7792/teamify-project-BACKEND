@@ -1,6 +1,11 @@
 const express = require("express");
 const router = express.Router();
 
+// débloquer les requtes cross-origin
+const app = express();
+const cors = require("cors");
+app.use(cors());
+
 const Team = require("../models/Team.js");
 const User = require("../models/User.js");
 
