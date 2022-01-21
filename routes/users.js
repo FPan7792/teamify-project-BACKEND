@@ -57,7 +57,7 @@ router.post("/user/signup", async (req, res) => {
           };
           console.log(newUser);
 
-          await axios.post("http://127.0.0.1:3001/user/myteams/create", value, {
+          await axios.post("http://process.env.PORT/user/myteams/create", value, {
             headers: {
               Authorization: "Bearer " + newUser.token,
             },
