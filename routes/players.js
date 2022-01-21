@@ -117,7 +117,7 @@ router.get("/player/transfert/:id", async (req, res) => {
   const URL3 = `https://www.transfermarkt.fr/schnellsuche/ergebnis/schnellsuche?query=${player}`;
   try {
     const fetchTMInfos = async () => {
-      const browser = await puppeteer.launch();
+      const browser = await puppeteer.launch({args:  ['--no-sandbox'] });
       const page = await browser.newPage();
       await page.goto(URL3, { waitUntil: "domcontentloaded" });
 
