@@ -1,11 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const axios = require("axios").default;
-const app = express();
-// débloquer les requtes cross-origin
-const cors = require("cors");
-app.use(cors());
-
 
 //  import du package pupeeteer pour fetch les données
 const puppeteer = require("puppeteer");
@@ -116,7 +111,7 @@ router.get("/players/:team/:player", async (req, res) => {
 // On preferera les requetes vers l'API TM avec PUPETEER
 
 // requete vers l'API TM avec Pupeeteer
-router.get("/player/transfert/:id", cors(), async (req, res) => {
+router.get("/player/transfert/:id", async (req, res) => {
   const player = req.params.id;
   console.log(player);
   const URL3 = `https://www.transfermarkt.fr/schnellsuche/ergebnis/schnellsuche?query=${player}`;
