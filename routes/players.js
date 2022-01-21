@@ -116,7 +116,7 @@ router.get("/players/:team/:player", async (req, res) => {
 // On preferera les requetes vers l'API TM avec PUPETEER
 
 // requete vers l'API TM avec Pupeeteer
-router.get("/player/transfert/:id", async (req, res) => {
+router.get("/player/transfert/:id", cors(), async (req, res) => {
   const player = req.params.id;
   console.log(player);
   const URL3 = `https://www.transfermarkt.fr/schnellsuche/ergebnis/schnellsuche?query=${player}`;
